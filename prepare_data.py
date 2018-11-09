@@ -128,7 +128,7 @@ def create_training_labels(p_labels, p_labels_data_file_path) :
     """ 
 
     classes = pd.DataFrame(p_labels.astype(int))
-    classes.to_csv(p_labels_data_file_path, header=None, index=False)
+    classes.to_csv(p_labels_data_file_path, header=None)
 
     return
 
