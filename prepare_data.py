@@ -3,6 +3,7 @@
 """
 Prepares data for easier processing by the neural net classifier.
 """
+import logging
 
 import math
 from io import BytesIO
@@ -28,12 +29,15 @@ image_height = 128//1
 image_data_size = image_width*image_height
 channels = 1
 
-input_data_file_path = './data/data-release.zip'
+data_root_path = './data/'
 
-training_data_file_path = './data/image_train.data'
-labels_data_file_path = './data/image_train_labels.csv'
-testing_data_file_path = './data/image_test.data'
-testing_submission_file_path = './data/submission_format.csv'
+input_data_file_path = data_root_path + 'data-release.zip'
+
+training_image_data_file_path = data_root_path + 'image_train.data'
+training_labels_data_file_path = data_root_path + 'image_train_labels.csv'
+testing_data_file_path = data_root_path + 'image_test.data'
+
+testing_submission_file_path = data_root_path + 'submission_format.csv'
 
 def compose_train_image(p_img1, p_img2) :
     """
@@ -124,7 +128,6 @@ def create_training_labels(p_labels, p_labels_data_file_path) :
 
     @params:
         p_labels - Required: the array of labels (array)
-
     """ 
 
     classes = pd.DataFrame(p_labels.astype(int))
@@ -180,7 +183,6 @@ def create_testing_submission(p_input_data_file_path, p_testing_submission_file_
     @params:
         p_input_data_file_path - Required: the input data file path (String)
         p_testing_submission_file_path - Required: the testing submission file path (String)
-
     """ 
     submission_format_file_path = 'submission_format.csv'
 
@@ -197,14 +199,20 @@ def main() :
     """
     Entry point
     """
-    training_labels  = create_trainining_images_data_file(input_data_file_path, training_data_file_path)
-    create_training_labels(training_labels, labels_data_file_path)
-    print("Processed training images count: %d" % training_labels.shape[0])
+    logging.basicConfig(level=logging.INFO)
+    
+    #create training data
+    logging.info('Creating training data ...')
+    training_labels  = create_trainining_images_data_file(input_data_file_path, training_image_data_file_path)
+    create_training_labels(training_labels, training_labels_data_file_path)
+    logging.info("Processed training images count: %d" % training_labels.shape[0])
+    logging.info('Creating training data DONE')
 
+    logging.info('Creating testing data ...')
     testing_count = create_testing_images_data_file(input_data_file_path, testing_data_file_path)
     create_testing_submission(input_data_file_path, testing_submission_file_path)
-
-    print("Processed testing images count: %d" % testing_count)
+    logging.info("Processed testing images count: %d" % testing_count)
+    logging.info('Creating testing data DONE')
 
 if __name__ == '__main__':
     main()
