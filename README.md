@@ -69,7 +69,7 @@ Our neural network model was conceived inspired by the VGG-16 architecture, albe
 
 The architecture of the neural network can be seen bellow:
 
-![Neural network architecture](./doc/img/model.png)
+![Neural network architecture](./doc/img/model.png) 
 
 The architecture of the neural network can be summed up as follows:
 
